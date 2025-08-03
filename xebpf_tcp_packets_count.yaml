@@ -1,0 +1,35 @@
+metrics:
+  counters:
+    - name: xebpf_tcp_packets_total
+      help: tcp packets total
+      labels:
+        - name: src_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+        - name: dst_port
+          size: 2
+          padding: 2
+          decoders:
+            - name: uint
+        - name: dst_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+    
+    - name: xebpf_tcp_packets_bytes
+      help: tcp packets bytes
+      labels:
+        - name: src_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+        - name: dst_port
+          size: 2
+          padding: 2
+          decoders:
+            - name: uint
+        - name: dst_ip
+          size: 4
+          decoders:
+            - name: inet_ip

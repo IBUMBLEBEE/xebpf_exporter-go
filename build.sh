@@ -1,0 +1,1 @@
+make -C examples clean build

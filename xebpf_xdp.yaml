@@ -1,0 +1,18 @@
+metrics:
+  counters:
+    - name: xebpf_xdp_incoming_packets_total
+      help: Incoming packets going through xdp by protocol and port
+      labels:
+        - name: src_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+        - name: dst_port
+          size: 2
+          padding: 2
+          decoders:
+            - name: uint
+        - name: dst_ip
+          size: 4
+          decoders:
+            - name: inet_ip

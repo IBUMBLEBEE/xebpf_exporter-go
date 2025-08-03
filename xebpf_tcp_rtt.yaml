@@ -1,0 +1,35 @@
+metrics:
+  counters:
+    - name: xebpf_tcp_rtt_latency_us_sum
+      help: tcp rtt latency sum
+      labels:
+        - name: src_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+        - name: dst_port
+          size: 2
+          padding: 2
+          decoders:
+            - name: uint
+        - name: dst_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+    
+    - name: xebpf_tcp_rtt_latency_total
+      help: tcp rtt latency total
+      labels:
+        - name: src_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+        - name: dst_port
+          size: 2
+          padding: 2
+          decoders:
+            - name: uint
+        - name: dst_ip
+          size: 4
+          decoders:
+            - name: inet_ip
