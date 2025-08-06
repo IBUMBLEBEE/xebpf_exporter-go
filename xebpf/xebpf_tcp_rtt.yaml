@@ -1,0 +1,72 @@
+metrics:
+  counters:
+    - name: xebpf_tcp_rtt_latency_us_sum
+      help: tcp rtt latency sum
+      labels:
+        - name: src_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+        - name: dst_port
+          size: 2
+          padding: 2
+          decoders:
+            - name: uint
+
+        - name: dst_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+        
+        - name: service_name
+          size: 2
+          padding: 2
+          decoders:
+            - name: uint
+            - name: static_map
+              static_map:
+                80: http
+                443: http
+                5672: rabbitmq
+                25672: rabbitmq
+                6379: redis
+                16379: redis
+                3306: mysql
+                2379: etcd
+                8086: influxdb
+    
+    - name: xebpf_tcp_rtt_latency_total
+      help: tcp rtt latency total
+      labels:
+        - name: src_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+        - name: dst_port
+          size: 2
+          padding: 2
+          decoders:
+            - name: uint
+            
+
+        - name: dst_ip
+          size: 4
+          decoders:
+            - name: inet_ip
+
+        - name: service_name
+          size: 2
+          padding: 2
+          decoders:
+            - name: uint
+            - name: static_map
+              static_map:
+                80: http
+                443: http
+                5672: rabbitmq
+                25672: rabbitmq
+                6379: redis
+                16379: redis
+                3306: mysql
+                2379: etcd
+                8086: influxdb

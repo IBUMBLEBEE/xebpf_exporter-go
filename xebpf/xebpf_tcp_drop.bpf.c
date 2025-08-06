@@ -44,19 +44,20 @@ int tcp_drop_fn(struct kfree_skb_args *args) {
 
     __u32 src_ip = BPF_CORE_READ(inet, inet_saddr);
     __u32 dst_ip = BPF_CORE_READ(sk, __sk_common.skc_daddr);
-    __u32 dst_port = BPF_CORE_READ(sk, __sk_common.skc_dport);
+    __u16 dst_port = BPF_CORE_READ(sk, __sk_common.skc_dport);
 
     if (src_ip == dst_ip) {
         return 0;
     }
 
-    if (true) {
+    if (check_ports(bpf_ntohs(dst_port))) {
         struct xebpf_map_key_t key;
         __u64 *val;
 
         key.src_ip = src_ip;
         key.dst_ip = dst_ip;
-        key.dst_port = dst_port;
+        key.dst_port = bpf_ntohs(dst_port);
+        key.service_name = bpf_ntohs(dst_port);
 
         val = bpf_map_lookup_elem(&xebpf_tcp_drop_ipv4_packets_total, &key);;
         if (val) {

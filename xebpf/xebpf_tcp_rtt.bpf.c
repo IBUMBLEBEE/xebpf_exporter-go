@@ -36,14 +36,14 @@ int BPF_PROG(tcp_rcv_established_fn, struct sock *sk) {
 
     __u32 src_ip = BPF_CORE_READ(inet, inet_saddr);
     __u32 dst_ip = BPF_CORE_READ(sk, __sk_common.skc_daddr);
-    __u32 dst_port = BPF_CORE_READ(sk, __sk_common.skc_dport);
+    __u16 dst_port = BPF_CORE_READ(sk, __sk_common.skc_dport);
     // __u32 src_port = BPF_CORE_READ(inet, inet_sport);
 
     if (src_ip == dst_ip) {
         return 0;
     }
 
-    if (true) {
+    if (check_ports(bpf_ntohs(dst_port))) {
         struct tcp_sock *ts = bpf_skc_to_tcp_sock(sk);
         if (!ts) {
             return 0;
@@ -58,8 +58,9 @@ int BPF_PROG(tcp_rcv_established_fn, struct sock *sk) {
         key.src_ip = src_ip;
         key.dst_ip = dst_ip;
         // key.src_port = src_port;
-        key.dst_port = dst_port;
-
+        key.dst_port = bpf_ntohs(dst_port);
+        key.service_name = bpf_ntohs(dst_port);
+        
         latency_sum_val = bpf_map_lookup_elem(&xebpf_tcp_rtt_latency_us_sum, &key);
         if (latency_sum_val) {
             __sync_fetch_and_add(latency_sum_val, srtt);

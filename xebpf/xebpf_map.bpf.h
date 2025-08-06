@@ -11,7 +11,7 @@
 #define MAX_ENTRIES	1024
 #define AF_INET 2
 
-int DST_PORT_LIST[] = {16379, 25672, 6379, 3306, 2379, 80, 443};
+int DST_PORT_LIST[] = {16379, 6379, 25672, 5672, 8086, 3306, 2379, 80, 443};
 
 static __always_inline bool check_ports(__u32 port)
 {

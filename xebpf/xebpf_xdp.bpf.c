@@ -3,9 +3,6 @@
 #include <bpf/bpf_helpers.h>
 #include <bpf/bpf_endian.h>
 #include "xebpf_map.bpf.h"
-// #include "xebpf_config.bpf.c"
-
-#define UPPER_PORT_BOUND 32768
 
 char LICENSE[] SEC("license") = "GPL";
 
@@ -67,21 +64,14 @@ int count_packets_fn(struct xdp_md *ctx) {
         return XDP_PASS;
     }
 
-    // if (bpf_ntohs(tcph->dest) > UPPER_PORT_BOUND) {
-    //     return XDP_PASS;
-    // }
-
-    if (bpf_ntohs(tcph->dest) != 22) {
-        bpf_printk("tcp packet: %d, %d\n", tcph->dest, bpf_ntohs(tcph->dest));
-    }
-
-    if (ip->protocol == IPPROTO_TCP) {
+    if (ip->protocol == IPPROTO_TCP && check_ports(bpf_ntohs(tcph->dest))) {
         struct xebpf_map_key_t pk;
         __u64 *pv;
 
         pk.src_ip = ip->saddr;
         pk.dst_ip = ip->daddr;
-        pk.dst_port = tcph->dest;
+        pk.dst_port = bpf_ntohs(tcph->dest);
+        pk.service_name = bpf_ntohs(tcph->dest);
 
         pv = bpf_map_lookup_elem(&xebpf_xdp_incoming_packets_total, &pk);
         if (pv) {
