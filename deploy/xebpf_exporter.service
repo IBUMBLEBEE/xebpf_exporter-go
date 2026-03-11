@@ -4,7 +4,7 @@ Description=Xebpf Exporter
 [Service]
 User=root
 Environment="OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318"
-ExecStart=/usr/sbin/xebpf_exporter --config.dir=/etc/xebpf_exporter/bpf \
+ExecStart=/usr/sbin/ebpf_exporter --config.dir=/etc/xebpf_exporter/bpf \
     --config.names=xebpf_tcp_recv,xebpf_tcp_drop,xebpf_tcp_rtt,xebpf_xdp,xebpf_tcp_retransmit \
     --web.listen-address=":9527"
 
