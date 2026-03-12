@@ -145,13 +145,13 @@ Rabbimq
 https://perftest.rabbitmq.com/
 
 ```shell
-java -jar perf-test-2.21.0.jar --uri amqp://admin:123456@cv1xna-r9sandbox000:5672 -x 1 -y 2 -u "throughput-test-1" -a --id "test 1"
+java -jar perf-test-2.21.0.jar --uri amqp://admin:123456@rabbitMQ-r9sandbox000:5672 -x 1 -y 2 -u "throughput-test-1" -a --id "test 1"
 ```
 
 Redis
 
 ```shell
-redis-benchmark -h cv1xna-r9sandbox000 -p 6379 -c 4 -n 100000000
+redis-benchmark -h redis-r9sandbox000 -p 6379 -c 4 -n 100000000
 ```
 
 ## Debug
